@@ -23,7 +23,10 @@
                     <li><a href="#caracteristicas">Características</a></li>
                     <li><a href="#contacto">Contacto</a></li>
                 </ul>
-                <a href="#cta" class="btn btn-primary">Comenzar Ahora</a>
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                    <button id="registerBtn" class="btn btn-secondary">Regístrate</button>
+                    <a href="#cta" class="btn btn-primary">Comenzar Ahora</a>
+                </div>
             </nav>
         </div>
     </header>
@@ -350,6 +353,40 @@
             </p>
         </div>
     </footer>
+
+    <!-- Modal de Registro -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h2>Regístrate en FarmaSmart</h2>
+            <p style="color: var(--text-light); margin-bottom: 1.5rem;">
+                Completa el formulario para comenzar tu experiencia con nosotros
+            </p>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="nombre">Nombre *</label>
+                    <input type="text" id="nombre" name="nombre" required placeholder="Ingresa tu nombre">
+                </div>
+                <div class="form-group">
+                    <label for="apellido">Apellido *</label>
+                    <input type="text" id="apellido" name="apellido" required placeholder="Ingresa tu apellido">
+                </div>
+                <div class="form-group">
+                    <label for="correo">Correo Electrónico *</label>
+                    <input type="email" id="correo" name="correo" required placeholder="tu@correo.com">
+                </div>
+                <div id="formMessage" class="form-message"></div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                        Registrarse
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="cancelBtn">
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
