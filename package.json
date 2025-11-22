@@ -1,0 +1,18 @@
+{
+  "name": "farmasmart-landing",
+  "version": "1.0.0",
+  "description": "Landing page para FarmaSmart - Plataforma de ecommerce farmacéutico",
+  "scripts": {
+    "dev": "npx serve .",
+    "build": "echo 'No build step required for static site'"
+  },
+  "keywords": [
+    "farmacia",
+    "medicamentos",
+    "salud",
+    "landing-page"
+  ],
+  "author": "FarmaSmart",
+  "license": "MIT"
+}
+

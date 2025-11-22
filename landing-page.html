@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmaSmart - Nunca Más Olvides Tus Medicamentos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary-color: #10b981;
+            --danger-color: #ef4444;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #f9fafb;
+            --white: #ffffff;
+            --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-health: linear-gradient(135deg, #2563eb 0%, #10b981 100%);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            background: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--gradient-health);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--gradient-health);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--white);
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--white);
+            padding: 6rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-text .highlight {
+            color: #fbbf24;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .hero-text p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .hero-image {
+            position: relative;
+        }
+
+        .phone-mockup {
+            background: var(--white);
+            border-radius: 30px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            transform: rotate(-5deg);
+            transition: transform 0.3s;
+        }
+
+        .phone-mockup:hover {
+            transform: rotate(0deg) scale(1.05);
+        }
+
+        .app-preview {
+            background: var(--bg-light);
+            border-radius: 20px;
+            padding: 1.5rem;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .medication-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .medication-info h3 {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .medication-info p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .medication-time {
+            background: var(--gradient-health);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        /* Problem Section */
+        .problem {
+            padding: 6rem 0;
+            background: var(--bg-light);
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .section-header p {
+            font-size: 1.1rem;
+            color: var(--text-light);
+        }
+
+        .problems-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .problem-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .problem-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .problem-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .problem-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .problem-card p {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        /* Solution Section */
+        .solution {
+            padding: 6rem 0;
+            background: var(--white);
+        }
+
+        .solution-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .solution-card {
+            background: var(--bg-light);
+            padding: 2.5rem;
+            border-radius: 16px;
+            text-align: center;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .solution-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.2);
+        }
+
+        .solution-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient-health);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 1.5rem;
+            color: var(--white);
+        }
+
+        .solution-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .solution-card p {
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 6rem 0;
+            background: var(--bg-light);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-item {
+            display: flex;
+            gap: 1.5rem;
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-health);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--white);
+            flex-shrink: 0;
+        }
+
+        .feature-content h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .feature-content p {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: 6rem 0;
+            background: var(--gradient-health);
+            color: var(--white);
+            text-align: center;
+        }
+
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-white {
+            background: var(--white);
+            color: var(--primary-color);
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+        }
+
+        .btn-white:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--text-dark);
+            color: var(--white);
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--white);
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero-stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn-white {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-block;
+            background: rgba(251, 191, 36, 0.2);
+            color: #fbbf24;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">💊 FarmaSmart</div>
+                <ul class="nav-links">
+                    <li><a href="#problema">El Problema</a></li>
+                    <li><a href="#solucion">Solución</a></li>
+                    <li><a href="#caracteristicas">Características</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+                <a href="#cta" class="btn btn-primary">Comenzar Ahora</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text fade-in-up">
+                    <span class="badge">✨ Nueva Generación de Farmacia Digital</span>
+                    <h1>
+                        ¿Olvidaste tomar tus <span class="highlight">medicamentos</span> hoy?
+                    </h1>
+                    <p>
+                        El 50% de los pacientes con condiciones crónicas olvidan tomar sus medicamentos. 
+                        Esto puede ser peligroso, especialmente cuando tomas múltiples medicamentos con 
+                        posibles interacciones. <strong>FarmaSmart</strong> te ayuda a nunca más olvidar 
+                        y te protege de interacciones medicamentosas peligrosas.
+                    </p>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <a href="#cta" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2rem;">
+                            🚀 Empezar Gratis
+                        </a>
+                        <a href="#solucion" class="btn btn-secondary" style="font-size: 1.1rem; padding: 1rem 2rem;">
+                            Ver Cómo Funciona
+                        </a>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <span class="stat-number">50%</span>
+                            <span class="stat-label">Olvidan medicamentos</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">100K+</span>
+                            <span class="stat-label">Hospitalizaciones/año</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">95%</span>
+                            <span class="stat-label">Mejora adherencia</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-image fade-in-up">
+                    <div class="phone-mockup">
+                        <div class="app-preview">
+                            <div style="text-align: center; margin-bottom: 1rem;">
+                                <h3 style="color: var(--text-dark); font-size: 1.2rem;">Recordatorios Inteligentes</h3>
+                            </div>
+                            <div class="medication-card">
+                                <div class="medication-info">
+                                    <h3>Metformina 500mg</h3>
+                                    <p>Diabetes Tipo 2</p>
+                                </div>
+                                <div class="medication-time">8:00 AM</div>
+                            </div>
+                            <div class="medication-card">
+                                <div class="medication-info">
+                                    <h3>Lisinopril 10mg</h3>
+                                    <p>Hipertensión</p>
+                                </div>
+                                <div class="medication-time">12:00 PM</div>
+                            </div>
+                            <div class="medication-card">
+                                <div class="medication-info">
+                                    <h3>Atorvastatina 20mg</h3>
+                                    <p>Colesterol</p>
+                                </div>
+                                <div class="medication-time">8:00 PM</div>
+                            </div>
+                            <div style="background: #fef3c7; border-radius: 12px; padding: 1rem; margin-top: 1rem;">
+                                <p style="color: #92400e; font-size: 0.9rem; margin: 0;">
+                                    ⚠️ <strong>Alerta:</strong> Interacción detectada entre Lisinopril y Ibuprofeno. 
+                                    Consulta con tu farmacéutico.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section class="problem" id="problema">
+        <div class="container">
+            <div class="section-header">
+                <h2>El Problema Real que Nadie Resuelve</h2>
+                <p>
+                    Millones de personas luchan diariamente con la gestión de sus medicamentos. 
+                    Las consecuencias pueden ser graves.
+                </p>
+            </div>
+            <div class="problems-grid">
+                <div class="problem-card">
+                    <div class="problem-icon">😰</div>
+                    <h3>Olvidos Frecuentes</h3>
+                    <p>
+                        El 50% de pacientes con condiciones crónicas olvidan tomar sus medicamentos 
+                        al menos una vez por semana. Esto reduce la efectividad del tratamiento y 
+                        puede empeorar la condición.
+                    </p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-icon">⚠️</div>
+                    <h3>Interacciones Peligrosas</h3>
+                    <p>
+                        Cuando tomas múltiples medicamentos, las interacciones pueden ser mortales. 
+                        Más de 100,000 hospitalizaciones anuales se deben a interacciones 
+                        medicamentosas no detectadas.
+                    </p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-icon">📅</div>
+                    <h3>Horarios Complejos</h3>
+                    <p>
+                        Manejar 3, 4 o más medicamentos con diferentes horarios y frecuencias se 
+                        vuelve abrumador. Sin un sistema, es fácil confundirse y tomar dosis 
+                        incorrectas.
+                    </p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-icon">👴</div>
+                    <h3>Dificultad para Adultos Mayores</h3>
+                    <p>
+                        Los adultos mayores, que suelen tomar más medicamentos, enfrentan 
+                        desafíos adicionales: memoria, visión, y movilidad limitada hacen que 
+                        la gestión sea aún más difícil.
+                    </p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-icon">👨‍👩‍👧</div>
+                    <h3>Estrés para Cuidadores</h3>
+                    <p>
+                        Los cuidadores familiares viven con la ansiedad constante de que su 
+                        ser querido olvide medicamentos o tome dosis incorrectas, especialmente 
+                        cuando no están presentes.
+                    </p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-icon">💰</div>
+                    <h3>Desperdicio de Dinero</h3>
+                    <p>
+                        La baja adherencia no solo afecta la salud, sino también el bolsillo. 
+                        Medicamentos no tomados, visitas médicas adicionales y complicaciones 
+                        evitables cuestan miles de dólares al año.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Section -->
+    <section class="solution" id="solucion">
+        <div class="container">
+            <div class="section-header">
+                <h2>La Solución que Cambia Todo</h2>
+                <p>
+                    FarmaSmart es la única plataforma que combina recordatorios inteligentes, 
+                    detección de interacciones y gestión completa de medicamentos en un solo lugar.
+                </p>
+            </div>
+            <div class="solution-grid">
+                <div class="solution-card">
+                    <div class="solution-icon">🔔</div>
+                    <h3>Recordatorios Inteligentes</h3>
+                    <p>
+                        Notificaciones personalizadas por push, SMS y email en los horarios exactos. 
+                        Nunca más olvides una dosis. Compatible con múltiples medicamentos y horarios complejos.
+                    </p>
+                </div>
+                <div class="solution-card">
+                    <div class="solution-icon">🛡️</div>
+                    <h3>Protección Contra Interacciones</h3>
+                    <p>
+                        Nuestro sistema valida automáticamente todas las interacciones medicamentosas 
+                        antes de que agregues un nuevo medicamento. Te alerta y conecta con un 
+                        farmacéutico si es necesario.
+                    </p>
+                </div>
+                <div class="solution-card">
+                    <div class="solution-icon">📱</div>
+                    <h3>Calendario Visual</h3>
+                    <p>
+                        Ve todos tus medicamentos en un calendario fácil de entender. Marca como 
+                        "tomado" con un clic. Visualiza tu adherencia y comparte reportes con tu médico.
+                    </p>
+                </div>
+                <div class="solution-card">
+                    <div class="solution-icon">🔄</div>
+                    <h3>Autoreabastecimiento</h3>
+                    <p>
+                        Para medicamentos crónicos, configura suscripciones automáticas. El sistema 
+                        predice cuándo necesitarás más y te notifica antes de que se acaben.
+                    </p>
+                </div>
+                <div class="solution-card">
+                    <div class="solution-icon">👨‍⚕️</div>
+                    <h3>Farmacéuticos 24/7</h3>
+                    <p>
+                        Chatea en tiempo real con farmacéuticos certificados. Resuelve dudas, 
+                        recibe recomendaciones y asegúrate de que todo esté correcto.
+                    </p>
+                </div>
+                <div class="solution-card">
+                    <div class="solution-icon">👨‍👩‍👧</div>
+                    <h3>Compartir con Cuidadores</h3>
+                    <p>
+                        Invita a familiares o cuidadores para que vean tu calendario y reciban 
+                        alertas. Tranquilidad para todos, especialmente para adultos mayores.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="caracteristicas">
+        <div class="container">
+            <div class="section-header">
+                <h2>Todo lo que Necesitas en una Sola Plataforma</h2>
+                <p>
+                    No necesitas múltiples apps. FarmaSmart integra todo el ecosistema de salud 
+                    farmacéutica en un solo lugar.
+                </p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">💊</div>
+                    <div class="feature-content">
+                        <h3>Catálogo Completo</h3>
+                        <p>
+                            Accede a miles de medicamentos Rx y OTC, productos de cuidado personal 
+                            y dispositivos médicos. Todo verificado y con información detallada.
+                        </p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📋</div>
+                    <div class="feature-content">
+                        <h3>Prescripciones Digitales</h3>
+                        <p>
+                            Sube fotos de tus recetas o recibe prescripciones digitales directamente 
+                            de tu médico. Validación automática y procesamiento rápido.
+                        </p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🚚</div>
+                    <div class="feature-content">
+                        <h3>Entrega a Domicilio</h3>
+                        <p>
+                            Recibe tus medicamentos en casa con opciones de entrega estándar, express 
+                            o programada. Seguimiento en tiempo real y manejo especializado.
+                        </p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🏥</div>
+                    <div class="feature-content">
+                        <h3>Telemedicina Integrada</h3>
+                        <p>
+                            Agenda consultas virtuales con médicos, recibe prescripciones digitales 
+                            y ordénalas directamente desde la plataforma.
+                        </p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">💳</div>
+                    <div class="feature-content">
+                        <h3>Integración con Seguros</h3>
+                        <p>
+                            Validamos tu cobertura automáticamente, calculamos copagos y procesamos 
+                            reembolsos. Ahorra tiempo y dinero.
+                        </p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-content">
+                        <h3>Reportes de Adherencia</h3>
+                        <p>
+                            Genera reportes detallados de tu adherencia y compártelos con tu médico. 
+                            Mejora tus resultados de salud con datos reales.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta" id="cta">
+        <div class="container">
+            <h2>Comienza a Proteger tu Salud Hoy</h2>
+            <p>
+                Únete a miles de usuarios que ya mejoraron su adherencia y eliminaron la ansiedad 
+                de olvidar medicamentos o tener interacciones peligrosas.
+            </p>
+            <div class="cta-buttons">
+                <a href="#" class="btn btn-white">📱 Descargar App Gratis</a>
+                <a href="#" class="btn btn-white" style="background: transparent; border: 2px solid white; color: white;">
+                    💻 Usar en Web
+                </a>
+            </div>
+            <p style="margin-top: 2rem; font-size: 0.9rem; opacity: 0.8;">
+                ✅ Sin tarjeta de crédito • ✅ Configuración en 5 minutos • ✅ Soporte 24/7
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contacto">
+        <div class="container">
+            <div class="footer-links">
+                <a href="#">Sobre Nosotros</a>
+                <a href="#">Seguridad y Privacidad</a>
+                <a href="#">Términos y Condiciones</a>
+                <a href="#">Contacto</a>
+                <a href="#">Blog</a>
+            </div>
+            <p style="opacity: 0.7; margin-top: 1rem;">
+                © 2024 FarmaSmart. Todos los derechos reservados. | 
+                Certificado HIPAA y GDPR Compliant
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Fade in on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.problem-card, .solution-card, .feature-item').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
+
