@@ -19,7 +19,23 @@
  */
 
 function doPost(e) {
-  return processRequest(e.postData ? JSON.parse(e.postData.contents) : e.parameter);
+  // Manejar diferentes formatos de datos
+  let data = {};
+  
+  if (e.postData) {
+    // Si viene como JSON
+    try {
+      data = JSON.parse(e.postData.contents);
+    } catch (e) {
+      // Si no es JSON, usar como texto plano (FormData o URLSearchParams)
+      data = e.parameter || {};
+    }
+  } else {
+    // Usar parámetros directamente
+    data = e.parameter || {};
+  }
+  
+  return processRequest(data);
 }
 
 function doGet(e) {

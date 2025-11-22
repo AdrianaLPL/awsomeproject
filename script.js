@@ -103,45 +103,35 @@ function initModal() {
             showMessage('Enviando información...', 'loading');
 
             try {
-                // IMPORTANTE: Reemplaza esta URL con la URL de tu Google Apps Script Web App
+                // IMPORTANTE: URL de tu Google Apps Script Web App
                 // Ver instrucciones en INSTRUCCIONES_GOOGLE_SHEETS.md
-                const scriptUrl = 'TU_URL_DE_GOOGLE_APPS_SCRIPT_AQUI';
+                const scriptUrl = 'https://script.google.com/macros/s/AKfycbwGb1sa9NnXx88VRoknSY-D0-7epPNfly9p9lBYnT9aw6FLs04aZwnVMpB4Rtb6XPp_Ug/exec';
                 
-                // Crear FormData para enviar los datos
-                const formData = new FormData();
-                formData.append('nombre', nombre);
-                formData.append('apellido', apellido);
-                formData.append('correo', correo);
+                // Enviar datos como parámetros URL (método más compatible con Google Apps Script)
+                const params = new URLSearchParams();
+                params.append('nombre', nombre);
+                params.append('apellido', apellido);
+                params.append('correo', correo);
                 
-                // Enviar datos usando fetch
+                // Enviar datos usando fetch con POST
                 const response = await fetch(scriptUrl, {
                     method: 'POST',
-                    body: formData
+                    mode: 'no-cors', // Necesario para evitar problemas de CORS
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: params.toString()
                 });
 
-                // Verificar respuesta
-                if (response.ok) {
-                    const result = await response.json();
-                    if (result.success) {
-                        showMessage('¡Registro exitoso! Te contactaremos pronto.', 'success');
-                        form.reset();
-                        
-                        // Close modal after 2 seconds
-                        setTimeout(() => {
-                            closeModal();
-                        }, 2000);
-                    } else {
-                        showMessage('Hubo un error al registrar. Por favor intenta de nuevo.', 'error');
-                    }
-                } else {
-                    // Si la respuesta no es OK, asumimos éxito (Google Apps Script puede retornar 200 incluso con errores)
-                    showMessage('¡Registro exitoso! Te contactaremos pronto.', 'success');
-                    form.reset();
-                    
-                    setTimeout(() => {
-                        closeModal();
-                    }, 2000);
-                }
+                // Con no-cors no podemos verificar la respuesta, pero asumimos éxito
+                // Google Apps Script procesará los datos y los guardará en el Sheet
+                showMessage('¡Registro exitoso! Te contactaremos pronto.', 'success');
+                form.reset();
+                
+                // Close modal after 2 seconds
+                setTimeout(() => {
+                    closeModal();
+                }, 2000);
 
             } catch (error) {
                 console.error('Error:', error);

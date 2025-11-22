@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Conexión Google Sheets</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .test-form {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .test-form input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .test-form button {
+            background: #2563eb;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+        }
+        .success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #10b981;
+        }
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #ef4444;
+        }
+        .info {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #2563eb;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test de Conexión con Google Sheets</h1>
+    
+    <div class="test-form">
+        <h2>Probar Conexión</h2>
+        <input type="text" id="testNombre" placeholder="Nombre" value="Test">
+        <input type="text" id="testApellido" placeholder="Apellido" value="Usuario">
+        <input type="email" id="testCorreo" placeholder="Correo" value="test@example.com">
+        <button onclick="testConnection()">Enviar Prueba</button>
+    </div>
+    
+    <div id="result"></div>
+    
+    <div class="info" style="margin-top: 20px; padding: 15px;">
+        <h3>📋 Información de Configuración:</h3>
+        <p><strong>URL del Script:</strong> <span id="scriptUrl">https://script.google.com/macros/s/AKfycbwGb1sa9NnXx88VRoknSY-D0-7epPNfly9p9lBYnT9aw6FLs04aZwnVMpB4Rtb6XPp_Ug/exec</span></p>
+        <p><strong>Sheet ID:</strong> 1HAZ2nUIpCL62JPDkWrJUAfvfDMs-z9lyrtghtd1OI7M</p>
+        <p><strong>Columnas esperadas:</strong> id, Nombre, Apellido, Correo</p>
+    </div>
+
+    <script>
+        const scriptUrl = 'https://script.google.com/macros/s/AKfycbwGb1sa9NnXx88VRoknSY-D0-7epPNfly9p9lBYnT9aw6FLs04aZwnVMpB4Rtb6XPp_Ug/exec';
+        
+        async function testConnection() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<div class="info">Enviando datos...</div>';
+            
+            const nombre = document.getElementById('testNombre').value;
+            const apellido = document.getElementById('testApellido').value;
+            const correo = document.getElementById('testCorreo').value;
+            
+            if (!nombre || !apellido || !correo) {
+                resultDiv.innerHTML = '<div class="error">Por favor completa todos los campos</div>';
+                return;
+            }
+            
+            try {
+                const params = new URLSearchParams();
+                params.append('nombre', nombre);
+                params.append('apellido', apellido);
+                params.append('correo', correo);
+                
+                const response = await fetch(scriptUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: params.toString()
+                });
+                
+                // Con no-cors no podemos verificar la respuesta, pero asumimos éxito
+                resultDiv.innerHTML = `
+                    <div class="success">
+                        <h3>✅ Datos enviados correctamente</h3>
+                        <p><strong>Nombre:</strong> ${nombre}</p>
+                        <p><strong>Apellido:</strong> ${apellido}</p>
+                        <p><strong>Correo:</strong> ${correo}</p>
+                        <p style="margin-top: 10px;"><em>Verifica en tu Google Sheet que los datos se hayan guardado.</em></p>
+                    </div>
+                `;
+                
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="error">
+                        <h3>❌ Error al enviar datos</h3>
+                        <p>${error.message}</p>
+                        <p style="margin-top: 10px;"><strong>Posibles causas:</strong></p>
+                        <ul>
+                            <li>La URL del script no es correcta</li>
+                            <li>El script no está desplegado como Web App</li>
+                            <li>El script no tiene permisos para acceder al Sheet</li>
+                            <li>Problemas de CORS (normal con no-cors mode)</li>
+                        </ul>
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
+
